@@ -1,0 +1,48 @@
+name: labPhp
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: labPhp
+    container_name: labPhp-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    networks:
+      - labPhp
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nginx:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: labPhp-nginx
+    restart: unless-stopped
+    ports:
+      - 8000:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d
+    networks:
+      - labPhp
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgres:17.2
+    container_name: labPhp-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
+    volumes:
+      - ./docker-compose/postgres:/docker-entrypoint-initdb.d
+    networks:
+      - labPhp
