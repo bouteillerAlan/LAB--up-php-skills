@@ -4,21 +4,16 @@ FROM php:8.3-fpm
 ARG uid=1000
 ARG user=a2n
 
-# setup php and package needed for composer, larevel and so on
-RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libjpeg-dev \
+# setup php and package needed for composer, laravel and so on
+RUN apt-get update
+RUN apt-get install -y \
+    git curl zip unzip \
+    libpng-dev libjpeg-dev \
     libfreetype6-dev \
-    libonig-dev \
-    libxml2-dev \
-    libpq-dev \
-    libzip-dev \
+    libonig-dev libxml2-dev \
+    libpq-dev libzip-dev \
     libcurl4-openssl-dev \
-    zip \
-    unzip \
-    default-mysql-client \
+    default-mysql-client
 
 # cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
