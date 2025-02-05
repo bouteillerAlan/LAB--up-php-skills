@@ -4,6 +4,9 @@ FROM php:8.3-fpm
 ARG uid=1000
 ARG user=a2n
 
+# Use the default dev configuration
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+
 # setup php and package needed for composer, laravel and so on
 RUN apt-get update
 RUN apt-get install -y \
