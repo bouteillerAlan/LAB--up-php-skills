@@ -1,4 +1,4 @@
-<form action="contact.php" method="get">
+<form action="contact.php" method="post">
     <div>
         <label for="name">name</label>
         <input type="text" name="name">
