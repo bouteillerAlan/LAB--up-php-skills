@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
     working_dir: /var/www/
     volumes:
-      - ./:/var/www
+      - ./www:/var/www
     networks:
       - labPhp
     depends_on:
@@ -29,7 +29,7 @@ services:
     ports:
       - 8000:80
     volumes:
-      - ./:/var/www
+      - ./www:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d
     networks:
       - labPhp
