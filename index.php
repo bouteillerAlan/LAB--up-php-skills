@@ -1,7 +1,11 @@
-<?php
-print "
-Welcome to Lab, this is a test file.
-<br/>Current PHP version: " . phpversion() .
-"<br/>db is populated with a single table users and two very simple user just for example";
-
-phpinfo();
+<form action="contact.php" method="get">
+    <div>
+        <label for="name">name</label>
+        <input type="text" name="name">
+    </div>
+    <div>
+        <label for="email">email</label>
+        <input type="text" name="email">
+    </div>
+    <button type="submit">Submit</button>
+</form>
