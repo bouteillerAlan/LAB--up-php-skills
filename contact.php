@@ -1,12 +1,15 @@
 <?php
 
+$_MAXFILESIZE = 1000000;
+$_FILEEXTALLOWED = ["jpg", "jpeg", "gif", "png"];
+
 // cleaning up the data before anything else
 // I used strip_tag, but we totally can use htmlspecialchars
 $cleanedGetData = array_map(function ($getData) {
     return strip_tags(trim($getData));
 }, $_POST);
 
-/**
+/**http://localhost:8000/contact.php
  * test if a value is set with isset
  * @param $v
  * @return bool true if the value is set
@@ -51,3 +54,33 @@ elseif (!isValueEmail($cleanedGetData["email"]))
 
 // if everything is ok
 echo "Welcome " . $cleanedGetData["name"] . ", your email is " . $cleanedGetData["email"];
+
+// is file defined
+if (!isValueSet($_FILES["file"]))
+{
+    echo "You have included no file";
+    return;
+}
+
+// does the file up have error
+if ($_FILES["file"]["error"] !== 0)
+{
+    echo "The file upload have encounter a problem (error code: {$_FILES["file"]["error"]})";
+    return;
+}
+
+// checking the size (1Mo max ~)
+if ($_FILES["file"]["size"] > $_MAXFILESIZE)
+{
+    echo "The file is too heavy, you need to send a smaller file (less than " . $_MAXFILESIZE / 1000000 . "Mo)";
+    return;
+}
+
+// checking the ext
+$fileInfos = pathinfo($_FILES["file"]["name"]);
+if (!array_search($fileInfos["extension"], $_FILEEXTALLOWED))
+{
+    echo "The file is not on the right format (" . implode(", ", $_FILEEXTALLOWED) . ")";
+    return;
+}
+
