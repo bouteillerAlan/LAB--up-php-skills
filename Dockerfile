@@ -34,6 +34,10 @@ RUN mkdir -p /home/$user/.composer && \
 # install composer from the latest docker image
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# install laravel installer
+# TODO: not sure about that
+RUN composer global require laravel/installer
+
 # set working dir
 WORKDIR /var/www
 
