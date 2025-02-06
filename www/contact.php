@@ -84,3 +84,8 @@ if (!is_dir($_FILESTORAGEPATH))
     echo "Hu ho we have encountered a problem on the server, contact the support!";
     return;
 }
+
+// if everything is good let's store it
+$uploadDate = new DateTime();
+$uploadDateFormated = $uploadDate->format(DATE_W3C);
+move_uploaded_file($_FILES["file"]["tmp_name"], $_FILESTORAGEPATH . $uploadDateFormated . "-" . basename($_FILES["file"]["name"]));
