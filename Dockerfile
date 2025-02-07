@@ -38,6 +38,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # TODO: not sure about that
 RUN composer global require laravel/installer
 
+# install symfony cli
+RUN curl -sS https://get.symfony.com/cli/installer | bash && mv /root/.symfony5/bin/symfony /usr/local/bin/symfony
+
 # set working dir
 WORKDIR /var/www
 

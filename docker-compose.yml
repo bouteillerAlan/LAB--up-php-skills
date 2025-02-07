@@ -41,6 +41,8 @@ services:
     image: postgres:17.2
     container_name: labPhp-postgres
     restart: unless-stopped
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
