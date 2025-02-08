@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Enum\CommentStatus;
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -26,12 +27,12 @@ class Comment
     private ?\DateTimeImmutable $publishedAt = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $status = null;
+    private ?CommentStatus $status = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $content = null;
 
-    #[ORM\ManyToOne(inversedBy: 'commentssss')]
+    #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Book $book = null;
 
@@ -88,12 +89,12 @@ class Comment
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): ?CommentStatus
     {
         return $this->status;
     }
 
-    public function setStatus(string $status): static
+    public function setStatus(CommentStatus $status): static
     {
         $this->status = $status;
 
