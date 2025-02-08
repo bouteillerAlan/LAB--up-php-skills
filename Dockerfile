@@ -6,6 +6,9 @@ ARG user=a2n
 
 # Use the default dev configuration
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+    && echo "xdebug.idekey = a2nphpstorm" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # setup php and package needed for composer, laravel and so on
 RUN apt-get update
@@ -23,7 +26,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # php module required by laravel or other
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip curl intl xdebug
+    && docker-php-ext-install pdo pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd zip curl intl
 
 # same but from pecl
 RUN pecl install redis-6.1.0 \

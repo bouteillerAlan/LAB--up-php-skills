@@ -14,6 +14,7 @@ services:
     working_dir: /var/www/
     ports:
       - "8000:8000" #symfony
+      - "9003:9003" #xdebug
     volumes:
       - ./www:/var/www
     networks:
@@ -51,5 +52,6 @@ services:
       POSTGRES_DB: ${DB_DATABASE}
     volumes:
       - ./docker-compose/postgres:/docker-entrypoint-initdb.d
+      - ./docker-compose/postgres/data:/var/lib/postgresql/data:rw
     networks:
       - labPhp
