@@ -12,6 +12,8 @@ services:
     container_name: labPhp-app
     restart: unless-stopped
     working_dir: /var/www/
+    ports:
+      - "8000:8000" #symfony
     volumes:
       - ./www:/var/www
     networks:
@@ -27,7 +29,7 @@ services:
     container_name: labPhp-nginx
     restart: unless-stopped
     ports:
-      - 8000:80
+      - "8080:80"
     volumes:
       - ./www:/var/www
       - ./docker-compose/nginx:/etc/nginx/conf.d
@@ -42,7 +44,7 @@ services:
     container_name: labPhp-postgres
     restart: unless-stopped
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
