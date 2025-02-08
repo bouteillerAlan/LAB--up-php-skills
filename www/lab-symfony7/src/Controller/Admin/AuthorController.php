@@ -34,7 +34,8 @@ final class AuthorController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // handle data
+            #$data = $form->getData();
+            #var_dump($data);
         }
 
         return $this->render('admin/author/new.html.twig', [
