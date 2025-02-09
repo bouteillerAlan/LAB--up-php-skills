@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Book;
 use App\Form\BookType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,11 @@ final class BookController extends AbstractController
     /**
      * form that create a new book
      * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[Route('/new', name: 'app_admin_new_book', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
@@ -35,6 +37,8 @@ final class BookController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $manager->persist($data);
+            $manager->flush();
         }
 
         return $this->render('admin/book/new.html.twig', [

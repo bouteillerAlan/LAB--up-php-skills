@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Author;
 use App\Form\AuthorType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,11 @@ final class AuthorController extends AbstractController
     /**
      * form that create a new author
      * @param Request $request
+     * @param EntityManagerInterface $manager
      * @return Response
      */
     #[Route('/new', name: 'app_admin_author_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
+    public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $author = new Author();
         $form = $this->createForm(AuthorType::class, $author);
@@ -35,6 +37,8 @@ final class AuthorController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
+            $manager->persist($data);
+            $manager->flush();
         }
 
         return $this->render('admin/author/new.html.twig', [
