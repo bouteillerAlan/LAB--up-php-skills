@@ -22,43 +22,46 @@ class BookType extends AbstractType
         $builder
             ->add('title', TextType::class, [
                 'required' => true,
-                'label' => 'Titre'
+                'label' => 'Titre',
             ])
             ->add('isbn', TextType::class, [
                 'required' => false,
-                'label' => 'ISBN'
+                'label' => 'ISBN',
             ])
             ->add('cover', TextType::class, [
                 'required' => false,
-                'label' => 'Couverture'
+                'label' => 'Couverture',
             ])
             ->add('editedAt', DateType::class, [
                 'input' => 'datetime_immutable',
                 'widget' => 'single_text',
                 'required' => false,
-                'label' => 'Date de modification'
+                'label' => 'Date de modification',
             ])
             ->add('plot', TextType::class, [
                 'required' => false,
-                'label' => 'Résumé'
+                'label' => 'Résumé',
             ])
             ->add('pageNumber', IntegerType::class, [
                 'required' => true,
-                'label' => 'Nombre de page'
+                'label' => 'Nombre de page',
             ])
             ->add('status', EnumType::class, [
                 'class' => BookStatus::class,
                 'required' => true,
-                'label' => 'Status'
+                'label' => 'Status',
             ])
             ->add('editor', EntityType::class, [
                 'class' => Editor::class,
-                'choice_label' => 'id',
+                'label' => 'Editeur',
+                'choice_label' => 'name',
             ])
             ->add('authors', EntityType::class, [
                 'class' => Author::class,
-                'choice_label' => 'id',
+                'label' => 'Auteur',
+                'choice_label' => 'name',
                 'multiple' => true,
+                'by_reference' => false,
             ])
         ;
     }
