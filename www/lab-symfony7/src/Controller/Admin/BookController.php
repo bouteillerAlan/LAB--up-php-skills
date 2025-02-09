@@ -27,7 +27,7 @@ final class BookController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-    #[Route('/new', name: 'app_admin_new_book', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'app_admin_book_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $manager): Response
     {
         $book = new Book();
@@ -39,6 +39,7 @@ final class BookController extends AbstractController
             $data = $form->getData();
             $manager->persist($data);
             $manager->flush();
+            return $this->redirectToRoute('app_admin_book_new');
         }
 
         return $this->render('admin/book/new.html.twig', [

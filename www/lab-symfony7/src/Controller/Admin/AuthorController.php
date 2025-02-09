@@ -39,6 +39,7 @@ final class AuthorController extends AbstractController
             $data = $form->getData();
             $manager->persist($data);
             $manager->flush();
+            return $this->redirectToRoute('app_admin_author_new');
         }
 
         return $this->render('admin/author/new.html.twig', [

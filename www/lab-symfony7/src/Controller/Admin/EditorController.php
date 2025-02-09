@@ -39,6 +39,7 @@ final class EditorController extends AbstractController
             $data = $form->getData();
             $manager->persist($data);
             $manager->flush();
+            return $this->redirectToRoute('app_admin_editor_new');
         }
 
         return $this->render('admin/editor/new.html.twig', [
