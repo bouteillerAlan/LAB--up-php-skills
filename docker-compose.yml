@@ -14,7 +14,7 @@ services:
     working_dir: /var/www/
     ports:
       - "8000:8000" #symfony
-      - "9003:9003" #xdebug
+      - "9033:9003" #xdebug
     volumes:
       - ./www:/var/www
     networks:

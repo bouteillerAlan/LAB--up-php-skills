@@ -3,23 +3,34 @@ FROM php:8.3-fpm
 # same uid has the local user, this facilite handling file w/ artisant for example
 ARG uid=1000
 ARG user=a2n
+ARG _IP_HOST=192.168.1.199
 
-# Use the default dev configuration
-RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
-RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.client_host = host.docker.internal" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
-    && echo "xdebug.idekey = a2nphpstorm" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+RUN echo "PLEASE CHECK THE IP VALUE FOR THE XDEBUG CONFIG (actually set to: $_IP_HOST)"
+RUN echo ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 
 # setup php and package needed for composer, laravel and so on
 RUN apt-get update
 RUN apt-get install -y \
-    git curl zip unzip \
+    git curl zip unzip iproute2 \
     libpng-dev libjpeg-dev \
     libfreetype6-dev \
     libonig-dev libxml2-dev \
     libpq-dev libzip-dev \
     libcurl4-openssl-dev \
     default-mysql-client
+
+# Use the default dev configuration
+# I have splint the comman for a better reading in the console when dcup --build for example
+RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
+#RUN echo "xdebug.mode=develop,coverage,debug,profile" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini \
+RUN echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.client_host=$_IP_HOST" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.idekey=a2nphpstorm" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "zend_extension=xdebug.so" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.log=/dev/stdout" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+RUN echo "xdebug.log_level=0" >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # cleanup
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
