@@ -7,6 +7,7 @@ use App\Repository\BookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: BookRepository::class)]
 class Book
@@ -14,24 +15,30 @@ class Book
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['book.index'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['book.details'])]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['book.details'])]
     private ?string $isbn = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['book.details'])]
     private ?string $cover = null;
 
     #[ORM\Column]
+    #[Groups(['book.details'])]
     private ?\DateTimeImmutable $editedAt = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $plot = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['book.details'])]
     private ?int $pageNumber = null;
 
     #[ORM\Column(length: 255)]
@@ -39,6 +46,7 @@ class Book
 
     #[ORM\ManyToOne(inversedBy: 'books')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['book.details'])]
     private ?Editor $editor = null;
 
     /**
@@ -56,7 +64,7 @@ class Book
     public function __construct()
     {
         $this->authors = new ArrayCollection();
-        $this->commentssss = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -189,13 +197,13 @@ class Book
      */
     public function getComments(): Collection
     {
-        return $this->commentssss;
+        return $this->comments;
     }
 
     public function addComments(Comment $comments): static
     {
-        if (!$this->commentssss->contains($comments)) {
-            $this->commentssss->add($comments);
+        if (!$this->comments->contains($comments)) {
+            $this->comments->add($comments);
             $comments->setBook($this);
         }
 
@@ -204,7 +212,7 @@ class Book
 
     public function removeComments(Comment $comments): static
     {
-        if ($this->commentssss->removeElement($comments)) {
+        if ($this->comments->removeElement($comments)) {
             // set the owning side to null (unless already changed)
             if ($comments->getBook() === $this) {
                 $comments->setBook(null);
