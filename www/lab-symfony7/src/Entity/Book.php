@@ -62,8 +62,8 @@ class Book
     private Collection $comments;
 
     #[ORM\ManyToOne(inversedBy: 'books')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?user $createdBy = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?User $createdBy = null;
 
     public function __construct()
     {
